@@ -22,11 +22,15 @@ struct Pint {
 
 impl Pint {
 
-    fn new(volume: f32, price: f32) -> Pint {
-        Pint {
+    fn new(volume: f32, price: f32) -> Self {
+        Self {
             volume: volume,
             price: price
         }
+    }
+
+    fn setPrice(&mut self, price: f32) {
+        self.price = price;
     }
 }
 
@@ -48,9 +52,11 @@ fn main() {
         price_per_liter: 5.0,
     };
 
-    let pint = Pint::new(0.568, 5.0);
+    let mut pint = Pint::new(0.568, 5.0);
     let half_pint = Pint::new(0.284, 3.0);
     let third_pint = Pint::new(0.189, 1.75);
+
+    pint.setPrice(5.45);
 
     let cryptotap = CryptoTap {
         keg: keg,
@@ -69,9 +75,9 @@ fn main() {
 
     let keg_volume = cryptotap.keg.volume;
 
-    let pint_profit = (pint.price - cryptotap.keg.price_per_liter) * (keg_volume / pint.volume);
-    let half_pint_profit = (half_pint.price - cryptotap.keg.price_per_liter) * (keg_volume / half_pint.volume);
-    let third_pint_profit = (third_pint.price - cryptotap.keg.price_per_liter) * (keg_volume / third_pint.volume);
+    let pint_profit = ((pint.price*(1.0/pint.volume)) - cryptotap.keg.price_per_liter) * (keg_volume / pint.volume);
+    let half_pint_profit = ((half_pint.price*(1.0 / half_pint.volume)) - cryptotap.keg.price_per_liter) * (keg_volume / half_pint.volume);
+    let third_pint_profit = ((third_pint.price*(1.0/ third_pint.volume)) - cryptotap.keg.price_per_liter) * (keg_volume / third_pint.volume);
 
     println!("The profit of a Pint is: {}", pint_profit);
     println!("The profit of a Half Pint is: {}", half_pint_profit);
